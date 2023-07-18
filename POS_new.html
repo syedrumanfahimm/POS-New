@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>POS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        #add-btn{
+            margin-top: 13px;
+        }
+        .center-text{
+            text-align: center;
+        }
+        .select-section{
+            margin-top: 10px;
+        }
+        #finalSubmit-form{
+            margin-left: 140px;
+        }
+        .calculation-field{
+            margin-bottom: 15px;
+        }
+        
+        input{
+            font-size: 14px !important;
+            line-height: 1.42857143 !important;
+        }
+        .readonly-input[readonly]{
+            display: block !important;
+            width: 100% !important;
+            height: 30px !important;
+            padding: 6px 12px !important;
+            font-size: 14px !important;
+            line-height: 1.42857143 !important;
+            color: #555 !important;
+            background-color: #fff !important;
+            background-image: none !important;
+            border: 1px solid #ccc !important;
+            border-radius: 4px !important;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+                    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s !important;
+                -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+                    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+        }
+        .footer-card{
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .footer-field{
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 6px;
+            color: black;
+            font-size: large;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .pay-with-points {
+            background-color: #FF5722;
+        }
+
+        .cash-payment {
+            background-color: #4CAF50;
+        }
+
+        .card-payment {
+            background-color: #2196F3;
+        }
+
+        .mobile-banking {
+            background-color: #9C27B0;
+        }
+        
+    </style>
+  </head>
+  <body>
+    <section class="header-section" style="display: none;">
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-2 d-flex">
+                    <i class="bi bi-layout-sidebar btn btn-primary"></i>
+                    <h4 class="ms-3 mt-1">OSS POS</h4>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-primary" id="add-customer-btn"><i class="bi bi-person-plus-fill"></i></button>
+                </div>
+                <div class="col-8">
+                    <form class="row g-3" id="add-customer-form" style="display: none;">
+                        <div class="col-auto">
+                            <input type="text" class="form-control" id="customer-phone" placeholder="Phone No">
+                        </div>
+                        <div class="col-auto">
+                          <input type="text" class="form-control" id="customer-name" placeholder="Name">
+                        </div>                       
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary mb-3">Add Customer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="select-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                        <!-- <h3 class="center-text">Add Product</h3> -->
+                        <h4 class="text-center">Add Product</h4>
+                        <form id="myForm" action="">
+                            <div class="row">
+                                <div class="col-lg-3">               
+                                    <div class="form-group">
+                                        <label for="floatingSelect">Category-Subcategory</label>
+                                        <select class="form-control" id="floatingSelect">
+                                            <option value=""></option>
+                                            <option value="Shirt-Tshirt">Shirt-Tshirt</option>
+                                            <option value="Pant-Jeans">Pant-Jeans</option>
+                                            <option value="Pant-Trouser">Pant-Trouser</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group field">
+                                        <label for="id1">Unit Price</label>
+                                        <input type="number" class="form-control" id="id1">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group field">
+                                        <label for="id2">Quantity</label>
+                                        <input type="number" class="form-control" id="id2" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                <div class="form-group" id="add-btn">
+                                    <button type="submit" class="btn btn-primary" id="add-btn"><i class="bi bi-plus-lg"></i></button>
+                                </div>         
+                                </div>
+                            </div>
+                        </form>
+                        <!-- <form action="" id="finalSubmit-form">
+
+                            <div class="row calculation-field">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-4 control-label text-center" for="grand-total">Grand Total</label>
+                                    <div class="col-sm-5">
+                                      <input class="form-control" type="text" id="grand-total" name="grandTotal">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                              
+                              
+
+                            <div class="form-group col-8">                                                   
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Grand Total</span>
+                                    <input type="text" name="grandTotal" class="form-control" id="grand-total" readonly>                                
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon2">Discount</span>
+                                    <input type="text" name="discount" class="form-control" id="discount-btn" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Vat(5%)</span>
+                                    <input type="text" name="vat" class="form-control" id="vat" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Payable Amount</span>
+                                    <input type="text" name="payableAmount" class="form-control" id="payable-amount" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Adjust</span>
+                                    <input type="text" name="adjustedAmount" class="form-control" id="adjust">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Total Bill</span>
+                                    <input type="number" name="bill" class="form-control" id="bill" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Customer Name</span>
+                                    <input type="text" name="customerName" class="form-control" id="nameDup" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Phone No</span>
+                                    <input type="number" name="customerPhone" class="form-control" id="phoneDup" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="paymentTypeSelect">Payment Type</label>
+                                    <select class="form-select" name="paymentType" id="paymentTypeSelect">
+                                      <option value="cash">Cash</option>
+                                      <option value="card">Card</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="input-group mt-3" id="bank-select-section" style="display: none;">
+                                    <label class="input-group-text" for="bankSelect">Bank Name</label>
+                                    <select class="form-select" name="bankName" id="bankSelect" >
+                                        <option value="">None</option>
+                                        <option value="dbbl">DBBL</option>
+                                        <option value="brac">Brac</option>
+                                        <option value="islami">Islami Bank</option>
+                                    </select>
+                                </div>
+                                <div class="input-group mt-3" id="card-no-section" style="display: none;">
+                                    <span class="input-group-text">Card No:</span>
+                                    <input type="number" name="cardNo" class="form-control" id="card-no">
+                                </div>
+    
+                                <div class="input-group mb-3 mt-3">
+                                    <span class="input-group-text">Cash Receive BDT</span>
+                                    <input type="number" name="cashReceive" class="form-control" id="receive">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Change BDT</span>
+                                    <input type="number" name="cashChange" class="form-control" id="dueField" readonly>
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Submit">
+                            </div>
+                        </form> -->
+                </div>
+                <div class="col-lg-6">
+
+                        <h4 class="text-center">Product List</h4>
+                        <table class="table" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>SL.</th>
+                                    <th>Item</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Discount(%)</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody> 
+                            </tbody>
+                        </table>
+                        <form action="" id="finalSubmit-form">
+                            <div class="row calculation-field">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-6 control-label text-right" for="grand-total">Grand Total</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control readonly-input text-right" type="text" id="grand-total" name="grandTotal" placeholder="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row calculation-field">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-6 control-label text-right" for="discount-btn">Discount</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control readonly-input text-right" type="text" id="discount-btn" name="discount" placeholder="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row calculation-field">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-6 control-label text-right" for="vat">Vat</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control readonly-input text-right" type="text" id="vat" name="vat" placeholder="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row calculation-field">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-6 control-label text-right" for="payable-amount">Payable Amount</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control readonly-input text-right" type="text" id="payable-amount" name="payableAmount" placeholder="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row calculation-field">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-6 control-label text-right" for="adjust">Adjust</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control text-right" type="text" id="adjust" name="adjustedAmount" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row calculation-field">
+                                <div class="form-group form-group-sm">
+                                    <label class="col-sm-6 control-label text-right" for="bill">Total Bill</label>
+                                    <div class="col-sm-3">
+                                        <input class="form-control readonly-input text-right" type="text" id="bill" name="bill" placeholder="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- <input type="submit" class="btn btn-primary" value="Submit"> -->
+                        </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="footer-section">
+        <div class="footer">
+            <div class="row">
+                <div class="col-lg-6 left-footer">
+                    <div class="footer-field">
+                        Total: <span id="bill">0.0</span>
+                    </div>
+                    <div class="footer-field">
+                        Return: <span id="returnValue">0.0</span>
+                    </div>
+                    <div class="footer-field">
+                        Paid: <span id="paidValue">0.0</span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div>
+                        <div class="footer-card pay-with-points">Pay with Points</div>
+                        <div class="footer-card cash-payment">Cash Payment</div>
+                        <div class="footer-card card-payment">Card Payment</div>
+                        <div class="footer-card mobile-banking">Mobile Banking</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+               
+    </section>
+    
+    <!-- <section class="select-section">
+        <div class="container">
+            <div class="row">
+                <div class="col mt-5">
+                    <h4 class="text-center mb-3">Add Product</h4>
+                    <form action="" id="myForm">
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group col-md-3">
+                                <label for="floatingSelect">Category-Subcategory</label>
+                                <select class="form-select" id="floatingSelect">
+                                    <option value=""></option>
+                                    <option value="Shirt-Tshirt">Shirt-Tshirt</option>
+                                    <option value="Pant-Jeans">Pant-Jeans</option>
+                                    <option value="Pant-Trouser">Pant-Trouser</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 ms-3">
+                                <label for="id1">Unit Price</label>                           
+                                <input type="number" id="id1" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3 ms-3">
+                                <label for="id2">Quantity</label>                           
+                                <input type="number" id="id2" class="form-control" />
+                                
+                            </div>
+                            <div class="form-group col-md-3 ms-3">
+                                <label for="customerDropdown">Customer Name</label> 
+                                <select class="form-control" id="customerDropdown">
+                                  <option value=""></option>
+                                  <option>01852538129 - fahim</option>
+                                  <option>01111111111 - Farhan</option>
+                                  <option>01242843943 - Adnan</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary ms-3"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <!-- <section class="view-section">
+        <div class="container">
+            <div class="row">
+                <div class="col mt-5">
+                    <h4 class="text-center mb-3">Product List</h4>
+                    <table class="table" id="dataTable">
+                        <thead>
+                          <tr>
+                            <th scope="col">SL.</th>
+                            <th scope="col">Item</th>
+                            <th scope="col">Unit Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Discount(%)</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody> 
+                        </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <!-- <section class="submit-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-7">
+                    <div id="invoiceResult" class="mb-5 bg-primary-subtle">
+                        
+                    </div>
+                </div>
+                <div class="col-5">
+                    <form action="" id="finalSubmit-form">
+                        <div class="form-group col-8">                                                   
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Grand Total</span>
+                                <input type="text" name="grandTotal" class="form-control" id="grand-total" readonly>                                
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon2">Discount</span>
+                                <input type="text" name="discount" class="form-control" id="discount-btn" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Vat(5%)</span>
+                                <input type="text" name="vat" class="form-control" id="vat" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Payable Amount</span>
+                                <input type="text" name="payableAmount" class="form-control" id="payable-amount" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Adjust</span>
+                                <input type="text" name="adjustedAmount" class="form-control" id="adjust">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Total Bill</span>
+                                <input type="number" name="bill" class="form-control" id="bill" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Customer Name</span>
+                                <input type="text" name="customerName" class="form-control" id="nameDup" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Phone No</span>
+                                <input type="number" name="customerPhone" class="form-control" id="phoneDup" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="paymentTypeSelect">Payment Type</label>
+                                <select class="form-select" name="paymentType" id="paymentTypeSelect">
+                                  <option value="cash">Cash</option>
+                                  <option value="card">Card</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group mt-3" id="bank-select-section" style="display: none;">
+                                <label class="input-group-text" for="bankSelect">Bank Name</label>
+                                <select class="form-select" name="bankName" id="bankSelect" >
+                                    <option value="">None</option>
+                                    <option value="dbbl">DBBL</option>
+                                    <option value="brac">Brac</option>
+                                    <option value="islami">Islami Bank</option>
+                                </select>
+                            </div>
+                            <div class="input-group mt-3" id="card-no-section" style="display: none;">
+                                <span class="input-group-text">Card No:</span>
+                                <input type="number" name="cardNo" class="form-control" id="card-no">
+                            </div>
+
+                            <div class="input-group mb-3 mt-3">
+                                <span class="input-group-text">Cash Receive BDT</span>
+                                <input type="number" name="cashReceive" class="form-control" id="receive">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Change BDT</span>
+                                <input type="number" name="cashChange" class="form-control" id="dueField" readonly>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+                    </form>
+                    <div class="container" id="json-view">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section> -->
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="./js/pos.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
